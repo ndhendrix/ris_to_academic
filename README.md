@@ -8,7 +8,7 @@ One of the theme's best features is that it creates a searchable database of you
 I've created this script to convert RIS bibliographies into that format. 
 
 Instructions for use:
-1. Download a bibliography in RIS format. **This script currently only works with RIS files from Web of Science.**
+1. Download a bibliography in RIS format. **This script has only been tested with RIS files from Web of Science.**
 2. Open this script in R.
 3. Set the directory for output. I suggest that you don't use the folder your website is stored in.
 4. Run the script.
