@@ -21,15 +21,33 @@ fix_author <- function(line) {
 
 # function to reorder date
 fix_date <- function(line) {
-  year <- substr(line, 1, 4)
-  month <- substr(line, 6, 7)
-  day <- substr(line, 9, nchar(line)-1)
-  if(is.na(as.numeric(day))) {
-    day <- "01"
+  if(grepl("^JAN",line)) {
+    return("01")
+  } else if(grepl("^FEB",line)) {
+    return("02")
+  } else if(grepl("^MAR",line)) {
+    return("03")
+  } else if(grepl("^APR",line)) {
+    return("04")
+  } else if(grepl("^MAY",line)) {
+    return("05")
+  } else if(grepl("^JUN",line)) {
+    return("06")
+  } else if(grepl("^JUL",line)) {
+    return("07")
+  } else if(grepl("^AUG",line)) {
+    return("08")
+  } else if(grepl("^SEP",line)) {
+    return("09")
+  } else if(grepl("^OCT",line)) {
+    return("10")
+  } else if(grepl("^NOV",line)) {
+    return("11")
+  } else if(grepl("^DEC",line)) {
+    return("12")
+  } else {
+    return("ERROR")
   }
-  return(paste0(year, "-",
-                month, "-",
-                day, "T00:00:00Z"))
 }
 
 # read file
@@ -64,7 +82,14 @@ while(TRUE) {
       } else if(grepl("^T2", line)) {
         publication <- strip_type(line)
       } else if(grepl("^DA", line)) {
-        date <- fix_date(strip_type(line))
+        month <- fix_date(strip_type(line))
+        date <- ifelse(grepl("[[:digit:]]", line),
+                       substr(line, 
+                              gregexec("[[:digit:]]",line)[[1]][1,1], 
+                              gregexec("[[:digit:]]",line)[[1]][1,2]),
+                       "01")
+      } else if(grepl("^PY", line)) {
+        year <- strip_type(line)
       } else if(grepl("^DO", line)) {
         doi <- strip_type(line)
       } else if(grepl("^VL", line)) {
@@ -93,19 +118,23 @@ while(TRUE) {
       writeLines(paste0("- ", authors[i]))
     }
     # write date
-    writeLines(paste0("date: '", ifelse(date == "", 
-                                       paste0(Sys.Date(), "T00:00:00Z"),
-                                       date), "'"))
-    writeLines(paste0("publishDate: '", ifelse(date == "", 
-                                              paste0(Sys.Date(), "T00:00:00Z"),
-                                              date), "'"))
+    writeLines(paste0("date: '", ifelse(month == "", 
+                                       paste0(Sys.Date() - 365, "T00:00:00Z"),
+                                       paste0(year, "-",
+                                              month, "-",
+                                              date, "T00:00:00Z")), "'"))
+    writeLines(paste0("publishDate: '", ifelse(month == "", 
+                                              paste0(Sys.Date() - 365, "T00:00:00Z"),
+                                              paste0(year, "-",
+                                                     month, "-",
+                                                     date, "T00:00:00Z")), "'"))
     # write doi & url
-    writeLines(paste0("doi: '", ifelse(doi == "", 
-                                      "",
-                                      doi), "'"))
-    writeLines(paste0("url_pdf: '", ifelse(doi == "", 
-                                         "",
-                                         paste0("https://doi.org/", doi, "'"))))
+    writeLines(ifelse(doi == "", 
+                      "",
+                      paste0("doi: '", doi, "'")))
+    writeLines(ifelse(doi == "", 
+                      "",
+                      paste0("url_pdf: 'https://doi.org/", doi, "'")))
     # write publication
     writeLines(paste0("publication: '*",
                       publication,
