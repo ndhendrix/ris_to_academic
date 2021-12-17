@@ -118,25 +118,25 @@ while(TRUE) {
       writeLines(paste0("- ", authors[i]))
     }
     # write date
-    writeLines(paste0("date: '", ifelse(month == "", 
+    writeLines(paste0("date: \"", ifelse(month == "", 
                                        paste0(Sys.Date() - 365, "T00:00:00Z"),
                                        paste0(year, "-",
                                               month, "-",
-                                              date, "T00:00:00Z")), "'"))
-    writeLines(paste0("publishDate: '", ifelse(month == "", 
+                                              date, "T00:00:00Z")), "\""))
+    writeLines(paste0("publishDate: \"", ifelse(month == "", 
                                               paste0(Sys.Date() - 365, "T00:00:00Z"),
                                               paste0(year, "-",
                                                      month, "-",
-                                                     date, "T00:00:00Z")), "'"))
+                                                     date, "T00:00:00Z")), "\""))
     # write doi & url
     writeLines(ifelse(doi == "", 
                       "",
-                      paste0("doi: '", doi, "'")))
+                      paste0("doi: \"", doi, "\"")))
     writeLines(ifelse(doi == "", 
                       "",
-                      paste0("url_pdf: 'https://doi.org/", doi, "'")))
+                      paste0("url_pdf: \"https://doi.org/", doi, "\"")))
     # write publication
-    writeLines(paste0("publication: '*",
+    writeLines(paste0("publication: \"*",
                       publication,
                       ifelse(volume == "",
                              "",
@@ -145,9 +145,9 @@ while(TRUE) {
                       ifelse(issue == "",
                              "",
                              paste0("(", issue, ")")),
-                      "'"))
+                      "\""))
     # write title
-    writeLines(paste0("title: '", title, "'"))
+    writeLines(paste0("title: \"", title, "\""))
     writeLines("---")
     sink()
   } 
