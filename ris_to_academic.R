@@ -1,5 +1,5 @@
 # set output folder
-out_folder <- "~/Dropbox (UW)/ris_test/test_output/"
+out_folder <- "YOUR WORKING DIRECTORY HERE"
 
 # select an RIS file
 in_file <- file.choose()
@@ -99,6 +99,8 @@ while(TRUE) {
         volume <- strip_type(line)
       } else if(grepl("^IS", line)) {
         issue <- strip_type(line)
+      } else if(grepl("^AB", line)) {
+        abstract <- strip_type(line)
       }
     }
     
@@ -138,6 +140,10 @@ while(TRUE) {
     writeLines(ifelse(doi == "", 
                       "",
                       paste0("url_pdf: \"https://doi.org/", doi, "\"")))
+    
+    # write abstract and summary
+    writeLines(paste0("abstract: \"", abstract, "\""))
+    writeLines(paste0("summary: \"", abstract, "\""))
     # write publication
     writeLines(paste0("publication: \"*",
                       publication,
