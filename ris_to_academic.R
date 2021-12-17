@@ -15,8 +15,10 @@ strip_type <- function(line) {
 # function to reorder author name
 fix_author <- function(line) {
   comma_char <- regexpr(",", line)[1]
-  return(paste(substr(line, comma_char + 2, nchar(line)),
-               substr(line, 1, comma_char - 1)))
+  out <- paste(substr(line, comma_char + 2, nchar(line)),
+               substr(line, 1, comma_char - 1))
+  out <- sub("\"", "\\\"", out)
+  return(out)
 }
 
 # function to reorder date
@@ -68,6 +70,7 @@ while(TRUE) {
     doi = ""
     volume = ""
     issue = ""
+    abstract = ""
     
     while(!grepl("^ER", line)) {
       # read next line
